@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.invalid/dots/v1/repovault.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "snapshotId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repoId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "PLANNED",
+        "CAPTURING",
+        "PARTIAL",
+        "SEALED",
+        "VERIFIED",
+        "FAILED"
+      ]
+    },
+    "consistency": {
+      "enum": [
+        "best_effort",
+        "incomplete"
+      ]
+    },
+    "captureStart": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "captureEnd": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "coverageComplete": {
+      "type": "boolean"
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "selected": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "COMPLETE",
+              "PARTIAL",
+              "FAILED",
+              "NOT_SELECTED",
+              "NOT_SUPPORTED",
+              "UNKNOWN"
+            ]
+          },
+          "expectedCount": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "actualCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "selected",
+          "status",
+          "expectedCount",
+          "actualCount",
+          "error"
+        ]
+      },
+      "minItems": 1
+    },
+    "encryption": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "age"
+        },
+        "recipientFingerprint": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "format",
+        "recipientFingerprint"
+      ]
+    },
+    "restoreStatus": {
+      "enum": [
+        "NOT_RUN",
+        "PASS",
+        "PARTIAL",
+        "FAIL"
+      ]
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/artifact"
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "snapshotId",
+    "repoId",
+    "state",
+    "consistency",
+    "captureStart",
+    "captureEnd",
+    "coverageComplete",
+    "resources",
+    "encryption",
+    "restoreStatus",
+    "files"
+  ]
+}

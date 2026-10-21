@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://specs.invalid/dots/v1/bugcapsule.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "reportId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actual": {
+      "type": "string",
+      "minLength": 1
+    },
+    "origin": {
+      "type": "string",
+      "format": "uri"
+    },
+    "reproductionState": {
+      "enum": [
+        "recorded",
+        "reproduction_candidate",
+        "reproduced"
+      ]
+    },
+    "redactionPolicyId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "monotonicMs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "kind": {
+            "enum": [
+              "snapshot",
+              "click",
+              "navigate",
+              "pause",
+              "resume",
+              "gap"
+            ]
+          },
+          "maskedTarget": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "seq",
+          "monotonicMs",
+          "kind",
+          "maskedTarget"
+        ]
+      },
+      "minItems": 0
+    },
+    "verifierRunId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "reportId",
+    "sessionId",
+    "title",
+    "expected",
+    "actual",
+    "origin",
+    "reproductionState",
+    "redactionPolicyId",
+    "coverage",
+    "events",
+    "verifierRunId"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "reproductionState": {
+            "const": "reproduced"
+          }
+        },
+        "required": [
+          "reproductionState"
+        ]
+      },
+      "then": {
+        "properties": {
+          "verifierRunId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

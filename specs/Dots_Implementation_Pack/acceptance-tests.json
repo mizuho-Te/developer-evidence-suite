@@ -1,0 +1,546 @@
+{
+  "version": "1.0",
+  "note": "実装後に実行する受け入れ試験。現時点では未実行。",
+  "tests": [
+    {
+      "id": "CP-A01",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "型エラーを新規導入",
+      "then": "必須型checkがFAIL",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A02",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "型は通るが保存後に値が消える",
+      "then": "保存再読込checkがFAIL",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A03",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "失敗テストをskipへ変更",
+      "then": "CP103が表示され合格にしない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A04",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "strict無効化とts-ignore追加",
+      "then": "該当差分と理由を表示",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A05",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "成功JSONのheadShaが別コミット",
+      "then": "STALEとINCOMPLETE",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A06",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "check 0件または全skip",
+      "then": "INCOMPLETE",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A07",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "PRが検査policyを緩和",
+      "then": "信頼済policyを維持して変更を表示",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A08",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "実行が上限時間を超える",
+      "then": "ERRORとプロセス回収",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A09",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "既存baseの失敗と新規headの失敗",
+      "then": "別々に分類",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A10",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "失敗後リトライで成功",
+      "then": "flakyを表示し要確認",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A11",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "ログ中に合成トークンを出す",
+      "then": "保存・出力に平文が残らない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-A12",
+      "product": "changeproof",
+      "phase": "P0",
+      "givenWhen": "偽のCI成功artifactをインポート",
+      "then": "由来unverified、verifiedにならない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A01",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "保存失敗のデモを記録し停止",
+      "then": "時系列と期待結果を報告できる",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A02",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "password欄に合成secretを入力",
+      "then": "メモリ外保存・ZIP・表示に残らない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A03",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "URL queryとfragmentにsecret",
+      "then": "書出しから除去される",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A04",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "private要素と子要素を操作",
+      "then": "文字・属性とも記録対象外",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A05",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "pause中に機密情報を入力",
+      "then": "pause区間の内容を取得しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A06",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "別originへ遷移",
+      "then": "権限範囲に従い停止理由を表示",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A07",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "scriptと外部URLを含む記録を開く",
+      "then": "実行と外部アクセスを阻止",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A08",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "5分または50MBに達する",
+      "then": "編集可能な状態で安全停止",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A09",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "欠損イベントと未対応iframe",
+      "then": "制限を表示し完全再生を名乗らない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A10",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "ZIPに../またはsymlinkを含める",
+      "then": "取込拒否し外へ書き込まない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A11",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "同じexportを2回インポート",
+      "then": "重複を判別しデータを壊さない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-A12",
+      "product": "bugcapsule",
+      "phase": "P0",
+      "givenWhen": "recordだけで再現を実行しない",
+      "then": "recordedのまま保持",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A01",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "31件超のIssueと複数ページを取得",
+      "then": "最終ページまで保存",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A02",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "途中ページで通信断と再開",
+      "then": "重複なく再開しPARTIALを隠さない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A03",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "権限不足でreviewが取得不能",
+      "then": "coverageComplete=false",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A04",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "取得中にIssueを更新",
+      "then": "取得区間と整合性の限界を表示",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A05",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "LFS参照あり実体取得なし",
+      "then": "未取得を表示し完全復旧としない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A06",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "暗号化payloadを1byte改変",
+      "then": "検証失敗、復旧しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A07",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "誤った鍵で復号",
+      "then": "鍵エラー、平文を出力しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A08",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "空ディレクトリへ復元",
+      "then": "Git整合性とrefs一致を確認",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A09",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "既存ファイルのある復旧先",
+      "then": "上書きせず停止",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A10",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "元repoでIssueやbranchを削除",
+      "then": "過去snapshotを保持",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A11",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "保存内に実行scriptと危険なpath",
+      "then": "script実行せずpath外書込を拒否",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-A12",
+      "product": "repovault",
+      "phase": "P0",
+      "givenWhen": "review履歴と著者情報を閲覧",
+      "then": "出所付きで表示し著者を偽装しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "INT01",
+      "product": "integration",
+      "phase": "P0",
+      "givenWhen": "故障デモを記録して修正",
+      "then": "報告、修正SHA、検証runが相互に参照できる",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "INT02",
+      "product": "integration",
+      "phase": "P0",
+      "givenWhen": "古いrunを新しい修正へ関連付け",
+      "then": "不一致を表示し成功を流用しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "INT03",
+      "product": "integration",
+      "phase": "P0",
+      "givenWhen": "証拠パックを暗号化保存して復旧",
+      "then": "元のhashと一致しローカルで閲覧できる",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "INT04",
+      "product": "integration",
+      "phase": "P0",
+      "givenWhen": "AI機能をすべて無効化",
+      "then": "3製品のP0基本機能が動く",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-01",
+      "product": "common",
+      "phase": "P0",
+      "givenWhen": "未知majorのJSONを取込",
+      "then": "拒否し原本を変更しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-02",
+      "product": "common",
+      "phase": "P0",
+      "givenWhen": "127.0.0.1 APIへ不正Originから要求",
+      "then": "状態変更とデータ読取を拒否",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-03",
+      "product": "common",
+      "phase": "P0",
+      "givenWhen": "取消操作を2回実行",
+      "then": "冪等に取消し子プロセスを回収",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-04",
+      "product": "common",
+      "phase": "P0",
+      "givenWhen": "200パーセント拡大とキーボード操作",
+      "then": "主要操作が完了できる",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-05",
+      "product": "common",
+      "phase": "P0",
+      "givenWhen": "クリーン環境でREADMEの手順を実行",
+      "then": "サポート対象環境で起動できる",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-06",
+      "product": "common",
+      "phase": "P0",
+      "givenWhen": "ネットワークを切断して各local機能を使用",
+      "then": "外部接続機能以外は制限表示付きで動作",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-P101",
+      "product": "changeproof",
+      "phase": "P1",
+      "givenWhen": "Webhookのbodyを改変して送信",
+      "then": "署名不一致で処理しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-P102",
+      "product": "changeproof",
+      "phase": "P1",
+      "givenWhen": "同じdeliveryを再送",
+      "then": "runと通知を二重作成しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "CP-P103",
+      "product": "changeproof",
+      "phase": "P1",
+      "givenWhen": "PRコードから書込token取得を試す",
+      "then": "実行環境に資格情報が存在しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-P101",
+      "product": "bugcapsule",
+      "phase": "P1",
+      "givenWhen": "Issue作成応答を通信断で失う",
+      "then": "照合前に重複投稿しない",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-P102",
+      "product": "bugcapsule",
+      "phase": "P1",
+      "givenWhen": "共有リンクを失効し再アクセス",
+      "then": "本文と資産の取得を拒否",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "BC-P103",
+      "product": "bugcapsule",
+      "phase": "P1",
+      "givenWhen": "Chrome再読込とworker休止",
+      "then": "継続または欠損を正しく表示",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-P101",
+      "product": "repovault",
+      "phase": "P1",
+      "givenWhen": "保存先の容量不足と再開",
+      "then": "PARTIALと再開可能位置を表示",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-P102",
+      "product": "repovault",
+      "phase": "P1",
+      "givenWhen": "定期実行が重複して起動",
+      "then": "単一lockと冪等snapshot",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-P103",
+      "product": "repovault",
+      "phase": "P1",
+      "givenWhen": "保護された最新検証済世代を削除",
+      "then": "削除拒否",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "RV-P104",
+      "product": "repovault",
+      "phase": "P1",
+      "givenWhen": "承認済み計画でprivate repoに復元",
+      "then": "新規repoのみ書込し元repoは不変",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-P101",
+      "product": "common",
+      "phase": "P1",
+      "givenWhen": "別workspace IDで資産を要求",
+      "then": "全APIとストレージでアクセス拒否",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-P102",
+      "product": "common",
+      "phase": "P1",
+      "givenWhen": "報告削除後に添付URLへアクセス",
+      "then": "定めた期間内に本体と関連資産を削除",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-P103",
+      "product": "common",
+      "phase": "P1",
+      "givenWhen": "移行後に旧形式のデータを読込",
+      "then": "明示した互換性または移行手順で復元",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    },
+    {
+      "id": "COM-P104",
+      "product": "common",
+      "phase": "P1",
+      "givenWhen": "依存更新後に前版へ戻す",
+      "then": "文書化したrollbackが成功",
+      "status": "NOT_RUN",
+      "resultArtifact": null
+    }
+  ]
+}

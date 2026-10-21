@@ -1,0 +1,10 @@
+JSON Schemaの通過だけで合格にしないこと。
+1 ChangeProofのverdictは必須check、欠落した業務要件、finding、flakyから本書07の優先順位で計算する。COMPLETE以外のverdictはnull。
+2 SHAと対象repo、policyDigest、run由来を確認する。ファイルhash一致だけでci_verifiedにしない。
+3 BugCapsuleのreproducedは存在する検証runと対象手順との対応確認が必要。文字列のrunIdがあるだけでは不足。
+4 RepoVaultはselected=trueの全resourceがCOMPLETEの場合だけcoverageComplete=true。選択0件はfalse。未対応scopeも一覧に保持。
+5 Snapshot VERIFIEDは暗号と構造の検証であり、restoreStatus PASSとは独立。
+6 完全なUTC時刻、seqの単調増加、bytesと実際のファイル長、hash一致を検証。
+7 artifactのSHA256は実際のファイルのバイト列を対象に計算する。スキーマ例に実ファイルがない場合はfiles=[]。fixtureを本番証拠としない。
+8 相対path、容量上限、非symlink、重複path、archive展開量の上限を検証。hashは実行内容の正当性を保証しない。
+9 すべてのexampleは合成データ。invalid-casesにはschemaで落ちる例と意味検証で落とす例がある。

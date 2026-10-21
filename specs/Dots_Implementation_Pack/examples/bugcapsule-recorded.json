@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "evidenceId": "example-bugcapsule",
+  "product": "bugcapsule",
+  "createdAt": "2026-10-21T00:00:00Z",
+  "origin": {
+    "kind": "synthetic",
+    "trust": "unverified",
+    "sourceId": "specification-fixture"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "files": []
+  },
+  "claims": [
+    {
+      "id": "fixture-note",
+      "type": "asserted",
+      "text": "仕様の説明用に作成した合成データ。実際のアプリ実行結果ではない。",
+      "evidenceRefs": []
+    }
+  ],
+  "payload": {
+    "reportId": "bug-demo-01",
+    "sessionId": "session-demo-01",
+    "title": "架空デモで保存後に入力値が消える",
+    "expected": "再読み込み後も入力した値が表示される",
+    "actual": "値が空欄になる",
+    "origin": "https://demo.example.invalid",
+    "reproductionState": "recorded",
+    "redactionPolicyId": "strict-v1",
+    "coverage": [
+      "same-origin",
+      "text-masked",
+      "no-network-body"
+    ],
+    "events": [
+      {
+        "seq": 0,
+        "monotonicMs": 0,
+        "kind": "snapshot",
+        "maskedTarget": "document"
+      },
+      {
+        "seq": 1,
+        "monotonicMs": 1000,
+        "kind": "click",
+        "maskedTarget": "button"
+      }
+    ],
+    "verifierRunId": null
+  }
+}

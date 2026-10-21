@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0",
+  "evidenceId": "example-repovault",
+  "product": "repovault",
+  "createdAt": "2026-10-21T00:00:00Z",
+  "origin": {
+    "kind": "synthetic",
+    "trust": "unverified",
+    "sourceId": "specification-fixture"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "files": []
+  },
+  "claims": [
+    {
+      "id": "fixture-note",
+      "type": "asserted",
+      "text": "仕様の説明用に作成した合成データ。実際のアプリ実行結果ではない。",
+      "evidenceRefs": []
+    }
+  ],
+  "payload": {
+    "snapshotId": "snapshot-demo-01",
+    "repoId": "10001",
+    "state": "PARTIAL",
+    "consistency": "incomplete",
+    "captureStart": "2026-10-21T00:00:00Z",
+    "captureEnd": "2026-10-21T00:02:00Z",
+    "coverageComplete": false,
+    "resources": [
+      {
+        "kind": "git",
+        "selected": true,
+        "status": "COMPLETE",
+        "expectedCount": null,
+        "actualCount": 12,
+        "error": null
+      },
+      {
+        "kind": "reviews",
+        "selected": true,
+        "status": "FAILED",
+        "expectedCount": null,
+        "actualCount": 0,
+        "error": "PERMISSION_DENIED"
+      },
+      {
+        "kind": "lfs",
+        "selected": false,
+        "status": "NOT_SELECTED",
+        "expectedCount": null,
+        "actualCount": 0,
+        "error": null
+      }
+    ],
+    "encryption": {
+      "format": "age",
+      "recipientFingerprint": "synthetic-recipient-fingerprint"
+    },
+    "restoreStatus": "NOT_RUN",
+    "files": []
+  }
+}

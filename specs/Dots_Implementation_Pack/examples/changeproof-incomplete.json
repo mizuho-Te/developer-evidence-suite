@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "evidenceId": "example-changeproof",
+  "product": "changeproof",
+  "createdAt": "2026-10-21T00:00:00Z",
+  "origin": {
+    "kind": "synthetic",
+    "trust": "unverified",
+    "sourceId": "specification-fixture"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "files": []
+  },
+  "claims": [
+    {
+      "id": "fixture-note",
+      "type": "asserted",
+      "text": "仕様の説明用に作成した合成データ。実際のアプリ実行結果ではない。",
+      "evidenceRefs": []
+    }
+  ],
+  "payload": {
+    "runId": "run-demo-01",
+    "baseSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "headSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "policyDigest": "72993b6cb83904d39a8c73bd0651aa6251288ede5dbc2c7bcbdc54cc5bbf5d77",
+    "state": "COMPLETE",
+    "verdict": "INCOMPLETE",
+    "checks": [
+      {
+        "id": "types",
+        "kind": "typescript",
+        "required": true,
+        "status": "PASS",
+        "exitCode": 0,
+        "artifactRefs": [],
+        "flaky": false
+      },
+      {
+        "id": "persistence",
+        "kind": "vitest",
+        "required": true,
+        "status": "NOT_RUN",
+        "exitCode": null,
+        "artifactRefs": [],
+        "flaky": false
+      }
+    ],
+    "findings": [],
+    "unverifiedRequirementIds": [
+      "save-and-reload"
+    ]
+  }
+}
