@@ -1,0 +1,11 @@
+// recorder.js is compiled into recorder.bundle.js by scripts/build-extension.ts.
+if(globalThis.__bugCapsuleStart&&(!globalThis.__bugCapsule||['REVIEW','DISCARDED'].includes(globalThis.__bugCapsule.state))){
+ const english=globalThis.__bugCapsuleStart.language==='en';
+ const stateLabel=state=>english?state:({RECORDING:'記録中',PAUSED:'一時停止',REVIEW:'確認',DISCARDED:'破棄済み'}[state]??state);
+ const banner=document.createElement('div');banner.setAttribute('data-bc-private','');banner.style.cssText='position:fixed;z-index:2147483647;top:8px;right:8px;background:#fff;color:#17242f;padding:12px;border:2px solid #925800;border-radius:8px;font:14px system-ui';
+ const label=document.createElement('span');label.textContent='BugCapsule '+stateLabel('RECORDING')+' ';banner.append(label);
+ const recorder=new globalThis.BugCapsuleRecorder(window,s=>{label.textContent='BugCapsule '+stateLabel(s.state)+' · '+Math.floor(s.elapsedMs/1000)+(english?'s ':'秒 ');chrome.runtime.sendMessage({type:'BC_STATUS',session:s}).then(result=>{if(result?.error&&['RECORDING','PAUSED'].includes(recorder.state))recorder.stop('LOCAL_STORAGE_FAILED');}).catch(()=>{if(['RECORDING','PAUSED'].includes(recorder.state))recorder.stop('EXTENSION_UNAVAILABLE');});if(['REVIEW','DISCARDED'].includes(s.state))banner.remove();},{originConfig:globalThis.__bugCapsuleStart.originConfig,sessionId:globalThis.__bugCapsuleStart.sessionId,expectedOrigin:globalThis.__bugCapsuleStart.origin});
+ for(const [labelText,action] of [['Pause','pause'],['Resume','resume'],['Stop','stop'],['Discard','discard']]){const b=document.createElement('button');b.textContent=english?labelText:({pause:'一時停止',resume:'再開',stop:'停止',discard:'破棄'}[action]);b.addEventListener('click',()=>{try{recorder[action]();}catch{}});banner.append(b);}
+ globalThis.__bugCapsule=recorder;document.documentElement.append(banner);try{recorder.start();}catch{banner.remove();recorder.discard();}delete globalThis.__bugCapsuleStart;
+ if(!globalThis.__bugCapsuleListener){globalThis.__bugCapsuleListener=true;chrome.runtime.onMessage.addListener((m,_s,reply)=>{if(m.type==='BC_COMMAND'&&['pause','resume','stop','discard','status'].includes(m.action)){try{reply(globalThis.__bugCapsule[m.action]());}catch{reply({error:'INVALID_STATE'});}return false;}});}
+}

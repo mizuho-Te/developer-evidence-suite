@@ -1,0 +1,16 @@
+import {readFile,writeFile,mkdir,readdir} from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {zipSync} from 'fflate';
+import {verify,restorePlan,restore} from '../apps/repovault/core.ts';
+import {artifact,pack,sha} from '../packages/safe-io/index.ts';
+import {execute} from '../packages/safe-io/process.ts';
+import {ROOT} from './fixtures.ts';
+const root=(await readFile(path.join(ROOT,'artifacts/latest-repovault.txt'),'utf8')).trim();const summary=JSON.parse(await readFile(path.join(root,'demo-summary.json'),'utf8'));
+const options={age:path.join(ROOT,'.tooling/age-v1.3.2/age/age'),workRoot:path.join(root,'private-work')};
+const original=await verify(summary.normal,summary.identity,options);const marker=path.join(root,'UNSAFE_SCRIPT_EXECUTED');
+async function seal(name:string,files:Record<string,Uint8Array>,unsafe=false){const dest=path.join(root,name);await mkdir(dest);const temporary=path.join(options.workRoot,name+'.zip');await writeFile(temporary,unsafe?zipSync(files):pack(files),{mode:0o600});try{const result=await execute([options.age,'-r',summary.recipient,'-o',path.join(dest,'payload.age'),temporary],root,{timeoutMs:10000});assert.equal(result.exitCode,0);const bytes=await readFile(path.join(dest,'payload.age'));await writeFile(path.join(dest,'index.json'),JSON.stringify({...original.index,ciphertext:artifact('payload.age',bytes,'application/age')}));return dest;}finally{const {unlink}=await import('node:fs/promises');await unlink(temporary);}}
+const files=structuredClone(original.files),evidence=JSON.parse(Buffer.from(files['evidence.json']!).toString());const script='mirror.git/hooks/post-checkout';files[script]=Buffer.from('#!/bin/sh\ntouch '+marker+'\n');const entry=artifact(script,files[script]!);evidence.integrity.files.push(entry);evidence.payload.files.push(entry);files['evidence.json']=Buffer.from(JSON.stringify(evidence));
+const withScript=await seal('hostile-script-snapshot',files);const plan=await restorePlan(withScript,summary.identity,path.join(root,'hostile-script-restored'),options);const restored=await restore(plan,summary.identity,options);assert.equal(restored.result.status,'PASS');assert(!(await readdir(root)).includes('UNSAFE_SCRIPT_EXECUTED'));
+const traversal=await seal('hostile-path-snapshot',{'../escape':Buffer.from('outside'),...original.files},true);await assert.rejects(()=>verify(traversal,summary.identity,options),/UNSAFE_PATH/);assert(!(await readdir(root)).includes('escape'));assert.equal((await readdir(options.workRoot)).length,0);
+const result={id:'RV-A11',status:'PASS',executedAt:new Date().toISOString(),scope:'Actual encrypted hostile fixtures; local age decrypt + Git restore',detail:{scriptPresentButNotExecuted:true,traversalRejectedBeforeExtraction:true,temporaryPlaintextRemoved:true,scriptSnapshot:withScript,pathSnapshot:traversal}};await writeFile(path.join(root,'RV-A11.json'),JSON.stringify(result,null,2));const all=JSON.parse(await readFile(path.join(root,'acceptance-results.json'),'utf8'));const row=all.tests.find((t:{id:string})=>t.id==='RV-A11');row.status='PASS';row.resultArtifact=path.join(root,'RV-A11.json');delete row.reason;await writeFile(path.join(root,'acceptance-results.json'),JSON.stringify(all,null,2));console.log('RV-A11 PASS: encrypted script and traversal fixtures');

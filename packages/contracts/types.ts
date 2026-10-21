@@ -1,0 +1,11 @@
+export type CheckStatus = 'PASS'|'FAIL'|'ERROR'|'SKIPPED'|'NOT_RUN'|'STALE';
+export type Verdict = 'FAIL'|'INCOMPLETE'|'REVIEW_REQUIRED'|'PASS';
+export interface Artifact {path:string; bytes:number; sha256:string; mediaType:string}
+export interface Check {id:string; kind:string; required:boolean; status:CheckStatus; exitCode:number|null; artifactRefs:string[]; flaky:boolean}
+export interface Finding {id:string; ruleId:string; file:string; line:number|null; reason:string; severity:'info'|'review'|'high'; suppressed:boolean}
+export interface ChangeRun {runId:string; baseSha:string; headSha:string; policyDigest:string; state:'QUEUED'|'RUNNING'|'COMPLETE'|'FAILED'|'CANCELLED'; verdict:Verdict|null; checks:Check[]; findings:Finding[]; unverifiedRequirementIds:string[]}
+export interface BugEvent {seq:number; monotonicMs:number; kind:'snapshot'|'click'|'navigate'|'pause'|'resume'|'gap'; maskedTarget:string}
+export interface BugReport {reportId:string; sessionId:string; title:string; expected:string; actual:string; origin:string; reproductionState:'recorded'|'reproduction_candidate'|'reproduced'; redactionPolicyId:string; coverage:string[]; events:BugEvent[]; verifierRunId:string|null}
+export interface Resource {kind:string; selected:boolean; status:'COMPLETE'|'PARTIAL'|'FAILED'|'NOT_SELECTED'|'NOT_SUPPORTED'|'UNKNOWN'; expectedCount:number|null; actualCount:number; error:string|null}
+export interface Snapshot {snapshotId:string; repoId:string; state:'PLANNED'|'CAPTURING'|'PARTIAL'|'SEALED'|'VERIFIED'|'FAILED'; consistency:'best_effort'|'incomplete'; captureStart:string; captureEnd:string; coverageComplete:boolean; resources:Resource[]; encryption:{format:'age';recipientFingerprint:string}; restoreStatus:'NOT_RUN'|'PASS'|'PARTIAL'|'FAIL'; files:Artifact[]}
+export interface Evidence<P=ChangeRun|BugReport|Snapshot> {schemaVersion:'1.0'; evidenceId:string; product:'changeproof'|'bugcapsule'|'repovault'; createdAt:string; origin:{kind:'synthetic'|'local_collector'|'github_ci'|'imported'; trust:'unverified'|'local_observed'|'ci_verified';sourceId:string}; integrity:{algorithm:'sha256';files:Artifact[]}; claims:{id:string;type:'observed'|'asserted'|'inferred';text:string;evidenceRefs:string[]}[];payload:P}

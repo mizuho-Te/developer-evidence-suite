@@ -1,0 +1,35 @@
+Cloud-only changes, 2026-10-21
+
+Implemented: bounded coarse masked structure snapshots, safe inert replay in sandbox iframe,
+real elapsed-time banner updates, local-storage failure stop, responsive popup.
+Snapshot JSON uses existing snapshot.maskedTarget, prefixed masked-dom-v1:.
+Only allowlisted tag names and child arrays are copied; no text, attributes, CSS, URLs,
+inputs, private descendants, media or embedded frame contents. Viewer reconstructs divs,
+never trusts source markup. This is coarse structure, not full appearance or rrweb replay.
+
+Verified in current cloud source: three masking/replay/ZIP/pause unit tests, TypeScript,
+extension build. Browser tests did NOT run: Chromium singleton socket EPERM; escalation
+bootstrap bwrap read-only failure. Do not count prior Mac tests as current browser passes.
+
+Prepared: node scripts/build-extension.ts; node scripts/browser-bugcapsule-cloud.ts
+Requires isolated Chromium runnable and localhost socket support. Test script uses a fresh
+profile, localhost synthetic demo, no external data/accounts, and real 300000ms wall time.
+No time mocking for browser duration branch. Default 50MB branch is not performance-tested.
+The script is prepared but has not passed browser execution itself. Popup activeTab grant,
+reload/worker suspension, export, browser keyboard/zoom and offline remain to verify.
+
+Artifacts: artifacts/cloud-bugcapsule-status/browser-results.json and unit.log.
+No screenshots were produced. No user's browser or Mac was accessed.
+
+Static QA revision (no additional browser launch):
+- Explicitly fills title, expected and actual before preview/approval/export.
+- Opens a fresh extension review page after recording because popup may auto-close.
+- Uses actual action popup for start; removed new-tab fallback that selected wrong tab.
+- Explicitly checks saved memo is empty after reload before describing the defect.
+- Adds current latest acceptance bug-to-fixed CP run linkage (INT01) to actual exported
+  browser report. Runs only when browser recording/export succeeds. Not executed yet.
+- Lifecycle reload-during-recording and worker-restart tests are not implemented:
+  NOT_RUN, not merely blocked. Post-record reload only confirms demo persistence defect.
+- Two-viewports/CSS zoom/skip-link and offline-viewer checks are only partial COM checks;
+  full keyboard workflow, native browser zoom and offline extension flow remain untested.
+- Prepared test preserves progress on failure; prior Mac evidence is never used.

@@ -1,0 +1,444 @@
+{
+  "sourceCommit": "f0a22ba7084c87ef5aed674143d61ff4f62cf54e",
+  "scope": "Cloud Linux synthetic local tests only; no real GitHub/browser success inference",
+  "testsPassed": 87,
+  "cleanCopyTestsPassed": 87,
+  "httpCases": {
+    "legacyZip": 16,
+    "streamV2": 16
+  },
+  "acceptance": {
+    "P0": {
+      "PASS": 29,
+      "PARTIAL": 15,
+      "FAIL": 0,
+      "BLOCKED": 2,
+      "NOT_RUN": 0
+    },
+    "P1": {
+      "PASS": 0,
+      "PARTIAL": 0,
+      "FAIL": 0,
+      "BLOCKED": 0,
+      "NOT_RUN": 14
+    }
+  },
+  "cases": [
+    {
+      "id": "CP-A01",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A02",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A03",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A04",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A05",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A06",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A07",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A08",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A09",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A10",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A11",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "CP-A12",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "BC-A01",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Synthetic DOM record-to-report passed; actual extension UI recording not run."
+    },
+    {
+      "id": "BC-A02",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "DOM canary passed; Chrome storage/runtime capture not run."
+    },
+    {
+      "id": "BC-A03",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "ZIP and URL sanitization passed from synthetic DOM; real Chrome not run."
+    },
+    {
+      "id": "BC-A04",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "DOM test passed; real Chrome not run."
+    },
+    {
+      "id": "BC-A05",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Recorder pause/resume tested in DOM simulation only."
+    },
+    {
+      "id": "BC-A06",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Start restriction tested; actual cross-origin navigation shutdown not run."
+    },
+    {
+      "id": "BC-A07",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "HTML escaping/sandbox/CSP inspected; browser execution and network interception not run."
+    },
+    {
+      "id": "BC-A08",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Boundary clock and small-budget tests; actual 5-minute/50MB Chrome performance not run."
+    },
+    {
+      "id": "BC-A09",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "BC-A10",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "BC-A11",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "BC-A12",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A01",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Pagination tested with explicit mock transport; real GitHub acquisition not authorized/run."
+    },
+    {
+      "id": "RV-A02",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Failure/resume/upsert exercised with mock transport only."
+    },
+    {
+      "id": "RV-A03",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "403 simulated; encrypted PARTIAL snapshot created with actual age."
+    },
+    {
+      "id": "RV-A04",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Concurrent update simulated; no atomic snapshot claim."
+    },
+    {
+      "id": "RV-A05",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A06",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A07",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A08",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A09",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A10",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A11",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "RV-A12",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Metadata rendering inspected; browser display not run."
+    },
+    {
+      "id": "INT01",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "Real ChangeProof run linked to DOM-simulated recording; actual Chrome full flow not run."
+    },
+    {
+      "id": "INT02",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "INT03",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "INT04",
+      "phase": "P0",
+      "status": "PARTIAL",
+      "reason": "AI disabled everywhere; real Chrome and GitHub scopes remain untested."
+    },
+    {
+      "id": "COM-01",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "COM-02",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "COM-03",
+      "phase": "P0",
+      "status": "PASS"
+    },
+    {
+      "id": "COM-04",
+      "phase": "P0",
+      "status": "BLOCKED",
+      "reason": "Actual Chromium launch blocked by environment process-singleton socket restriction; elevated executor bootstrap also failed. All-product real browser accessibility/offline checks not executed."
+    },
+    {
+      "id": "COM-05",
+      "phase": "P0",
+      "status": "PASS",
+      "reason": "Fresh source copy, pinned offline dependency installation and CLI/tests on cloud Linux. Not a fresh OS image."
+    },
+    {
+      "id": "COM-06",
+      "phase": "P0",
+      "status": "BLOCKED",
+      "reason": "Actual Chromium launch blocked by environment process-singleton socket restriction; elevated executor bootstrap also failed. All-product real browser accessibility/offline checks not executed."
+    },
+    {
+      "id": "CP-P101",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "CP-P102",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "CP-P103",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "BC-P101",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "BC-P102",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "BC-P103",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "RV-P101",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "RV-P102",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "RV-P103",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "RV-P104",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "COM-P101",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "COM-P102",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "COM-P103",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    },
+    {
+      "id": "COM-P104",
+      "phase": "P1",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: P1 is not implemented/verified. No real GitHub integration, billing, or customer-data testing performed."
+    }
+  ],
+  "capacity": {
+    "status": "PASS",
+    "startedAt": "2026-10-21T12:56:32.100Z",
+    "finishedAt": "2026-10-21T12:57:43.444Z",
+    "environment": {
+      "os": "Linux",
+      "release": "6.18.55",
+      "arch": "x64",
+      "cpu": "AMD EPYC 9V74 80-Core Processor",
+      "cpuCount": 9,
+      "totalMemoryBytes": 10451439616,
+      "node": "v24.19.0",
+      "git": "git version 2.47.3",
+      "age": "v1.3.2",
+      "filesystem": "container overlay; physical SSD characteristics NOT_VERIFIED"
+    },
+    "input": {
+      "gitObjectBytes": 1074069221,
+      "gitObjectFiles": 18,
+      "rawBlobBytes": 1073741824,
+      "metadataRows": 10000,
+      "metadataBytes": 1956953
+    },
+    "archive": {
+      "format": "rvstream-2",
+      "ciphertextBytes": 1076339610,
+      "ciphertextSha256": "e2b629efe42cc6e24a95335b96a9902cd172cbd5fd984e2b407ee69d44d7fbef"
+    },
+    "stagesMs": {
+      "generateFixture": 36349,
+      "capture": 12458,
+      "decryptVerify": 6191,
+      "restorePlan": 5087,
+      "restore": 10351,
+      "independentObjectHashComparison": 906
+    },
+    "memory": {
+      "nodeMaxRssKiB": 159396,
+      "note": "Node process high-water RSS; external Python resource/wait4 measurement records invoked workload child max RSS, not simultaneous process-tree aggregate."
+    },
+    "checks": {
+      "gitFsck": "PASS",
+      "refsMatch": "PASS",
+      "metadataCounts": "PASS",
+      "allGitObjectHashes": "PASS",
+      "metadataCount": "PASS",
+      "sourceRefs": 3,
+      "restoredRefs": 3,
+      "underTenMinuteDecryptVerify": true,
+      "underTenMinuteRestore": true
+    },
+    "limits": {
+      "payloadBytes": 4294967296,
+      "manifestBytes": 16777216,
+      "metadataBytes": 16777216,
+      "entries": 100000,
+      "chunkBytes": 1048576,
+      "minFreeMemory": 134217728
+    },
+    "scope": "Actual local Linux synthetic disk/age benchmark. Not GitHub, macOS, physical SSD, real customer data or disaster-recovery SLA evidence.",
+    "measurementNoteCorrection": "Corrected stale /usr/bin/time wording after measurement; /usr/bin/time was unavailable and no benchmark ran through it. Numeric measurements are unchanged."
+  },
+  "staticAnalysis": {
+    "status": "PASS",
+    "executedAt": "2026-10-21T12:58:34.850Z",
+    "scope": "Synthetic 100-file/10,000-added-line rule analysis only. Not Git checkout, build/test, UI, arbitrary repositories or performance guarantee.",
+    "environment": {
+      "os": "Linux",
+      "release": "6.18.55",
+      "arch": "x64",
+      "cpu": "AMD EPYC 9V74 80-Core Processor",
+      "node": "v24.19.0",
+      "totalMemoryBytes": 10451439616
+    },
+    "input": {
+      "files": 100,
+      "addedLines": 10000,
+      "diffBytes": 266459
+    },
+    "findings": 10000,
+    "elapsedMs": 304.192206,
+    "nodeMaxRssKiB": 70136,
+    "underThirtySeconds": true
+  }
+}

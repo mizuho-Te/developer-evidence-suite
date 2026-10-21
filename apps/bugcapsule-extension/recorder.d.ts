@@ -1,0 +1,3 @@
+import type {BugEvent} from '../../packages/contracts/types.ts';
+export interface RecorderStatus {sessionId?:string;state:string;origin:string;events:BugEvent[];reason:string;bytes:number;elapsedMs:number;coverage:string[]}
+export class Recorder {constructor(window:Window,emit?:(status:RecorderStatus)=>void,options?:{now?:()=>number;maxMs?:number;maxBytes?:number;originConfig?:import("./origin-policy.js").OriginConfiguration;sessionId?:string;expectedOrigin?:string});state:string;events:BugEvent[];start():RecorderStatus;pause():RecorderStatus;resume():RecorderStatus;stop(reason?:string):RecorderStatus;discard():RecorderStatus;status():RecorderStatus;tick():void;}

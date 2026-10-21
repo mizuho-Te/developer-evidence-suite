@@ -1,0 +1,59 @@
+// Synthetic loopback HTTP integration. Optional real age integration uses AGE_BIN/AGE_KEYGEN_BIN.
+// Never contacts GitHub; neither fake crypto nor a skipped crypto case is a PASS.
+import assert from 'node:assert/strict';
+import {createServer} from 'node:http';
+import {mkdtemp,mkdir,readFile,writeFile,readdir,rm} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import path from 'node:path';
+import {collectRepository,localHttpTransport,type ApiSource} from '../apps/repovault/collector.ts';
+import {captureHttp} from '../apps/repovault/http-workflow.ts';
+import {verify as verifyZip,restorePlan as restorePlanZip,restore as restoreZip,captureLocal as captureLocalZip} from '../apps/repovault/core.ts';
+import {verifyStream,restorePlanStream,restoreStream,captureStream} from '../apps/repovault/stream.ts';
+const stream=process.env.RV_ARCHIVE_FORMAT==='stream-v2';const verify=stream?verifyStream:verifyZip,restorePlan=stream?restorePlanStream:restorePlanZip,restore=stream?restoreStream:restoreZip,captureLocal=stream?captureStream:captureLocalZip;
+import {saveCheckpoint,loadCheckpoint} from '../apps/repovault/checkpoint.ts';
+const artifactRoot=path.resolve('artifacts');await mkdir(artifactRoot,{recursive:true});const root=await mkdtemp(path.join(artifactRoot,'repovault-http-'));
+const results:{id:string;status:string;detail:string}[]=[];
+async function test(id:string,fn:()=>Promise<void>){try{await fn();results.push({id,status:'PASS',detail:'Executed against synthetic local fixtures in this run.'});console.log(id+' PASS');}catch(e){results.push({id,status:'FAIL',detail:String(e)});process.exitCode=1;console.error(id+' FAIL '+e);}}
+let origin='',failPage=false,denyReview=false,limited=false,updated=false;const requests:string[]=[];
+const server=createServer((req,res)=>{requests.push(req.url??'');if(req.headers.authorization!=='Bearer synthetic-local-only'){res.writeHead(401);res.end();return;}
+ const u=new URL(req.url!,origin),p=u.pathname;res.setHeader('content-type','application/json');
+ if(p.endsWith('/issues')&&u.searchParams.get('page')==='2'&&failPage){res.destroy();return;}
+ if(p.endsWith('/issues')&&limited){res.writeHead(429,{'Retry-After':'1'});res.end('[]');return;}
+ if(p.endsWith('/issues')){const second=u.searchParams.get('page')==='2';if(!second)res.setHeader('Link',`<${origin}${p}?state=all&per_page=30&page=2>; rel="next"`);res.end(JSON.stringify(second?Array.from({length:5},(_,i)=>({id:i+31,number:i+31})):Array.from({length:30},(_,i)=>({id:i+1,number:i+1,body:updated?'updated':'original'}))));return;}
+ if(p.endsWith('/pulls')){res.end(JSON.stringify([{id:101,number:101},{id:102,number:102}]));return;}
+ if(p.endsWith('/reviews')){if(denyReview&&p.includes('/102/')){res.writeHead(403);res.end('[]');return;}res.end(JSON.stringify([{id:p.includes('/101/')?201:202,user:{login:'synthetic-author'},state:'APPROVED'}]));return;}
+ if(/\/pulls\/\d+\/comments$/.test(p)){res.end(JSON.stringify([{id:p.includes('/101/')?301:302,body:'inline synthetic',path:'index.js'}]));return;}
+ res.end(JSON.stringify([{id:401,body:'conversation'}]));
+});
+try{
+ await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',()=>resolve());});const address=server.address();assert(address&&typeof address==='object');origin=`http://127.0.0.1:${address.port}`;
+ const source:ApiSource={apiOrigin:origin,owner:'synthetic',repo:'demo',mode:'synthetic_http'},transport=localHttpTransport(origin,'synthetic-local-only');
+ await test('RV-HTTP-01-pagination',async()=>{const v=await collectRepository(source,transport);assert.equal(v.data.issues?.length,35);assert.equal(v.data.reviews?.length,2);assert.equal(v.data['review-comments']?.length,2);assert.equal(v.consistency,'best_effort');});
+ await test('RV-HTTP-02-network-resume',async()=>{failPage=true;const first=await collectRepository(source,transport);assert.equal(first.resources.find(r=>r.kind==='issues')?.status,'PARTIAL');failPage=false;updated=true;const resumed=await collectRepository(source,transport,first);assert.equal(resumed.data.issues?.length,35);assert.equal(resumed.data.issues?.[0]?.body,'updated');assert.equal(resumed.captureStart,first.captureStart);assert.equal(resumed.consistency,'best_effort');});
+ await test('RV-HTTP-03-review-permission',async()=>{denyReview=true;const v=await collectRepository(source,transport);denyReview=false;assert.equal(v.resources.find(r=>r.kind==='reviews')?.status,'PARTIAL');assert.equal(v.consistency,'incomplete');});
+ await test('RV-HTTP-04-rate-limit-resume',async()=>{limited=true;const first=await collectRepository(source,transport);const count=requests.filter(p=>p.includes('/issues?')).length;const wait=await collectRepository(source,transport,first);assert.equal(wait.resources.find(r=>r.kind==='issues')?.error,'RATE_LIMIT_WAIT');assert.equal(requests.filter(p=>p.includes('/issues?')).length,count);limited=false;await new Promise(resolve=>setTimeout(resolve,1100));const resumed=await collectRepository(source,transport,wait);assert.equal(resumed.data.issues?.length,35);});
+ const age=process.env.AGE_BIN,keygen=process.env.AGE_KEYGEN_BIN;
+ if(!age||!keygen)results.push({id:'RV-CRYPTO',status:'BLOCKED',detail:'AGE_BIN and AGE_KEYGEN_BIN must name installed official age binaries. No fake encryption used.'});
+ else{
+  const options={age:path.resolve(age),workRoot:path.join(root,'private')},key=path.join(root,'identity.txt'),wrong=path.join(root,'wrong-identity.txt');
+  execFileSync(path.resolve(keygen),['-o',key],{stdio:'pipe'});execFileSync(path.resolve(keygen),['-o',wrong],{stdio:'pipe'});const recipient=execFileSync(path.resolve(keygen),['-y',key],{encoding:'utf8'}).trim();const repo=path.join(root,'repo');await mkdir(repo);
+  const git=(...args:string[])=>execFileSync('git',['-C',repo,...args],{stdio:'pipe',env:{PATH:process.env.PATH,HOME:root,GIT_CONFIG_NOSYSTEM:'1'}});
+  git('init');git('config','user.name','Synthetic');git('config','user.email','synthetic@example.invalid');await writeFile(path.join(repo,'README'),'synthetic fixture only\n');git('add','.');git('commit','-m','synthetic');git('branch','second');git('tag','fixture');
+  const input={archiveFormat:stream?'stream-v2' as const:'zip-v1' as const,repo,repoId:'synthetic/demo',source,recipient,out:path.join(root,'snapshots'),checkpointOut:path.join(root,'checkpoints'),token:'synthetic-local-only',trustedSynthetic:true};let snapshot='',checkpoint='';
+  await test('RV-CRYPTO-01-partial-capture',async()=>{failPage=true;const result=await captureHttp(input,options);failPage=false;snapshot=result.directory;checkpoint=result.checkpointDirectory!;assert.equal(result.evidence.payload.state,'PARTIAL');assert.deepEqual((await readdir(snapshot)).sort(),['index.json','payload.age']);assert.deepEqual((await readdir(checkpoint)).sort(),['index.json','state.age']);assert.deepEqual(await readdir(options.workRoot),[]);});
+  await test('RV-CRYPTO-02-encrypted-checkpoint-resume',async()=>{const loaded=await loadCheckpoint(checkpoint,key,options);assert.equal(loaded.checkpoints.issues?.pages,1);const result=await captureHttp({...input,previousCheckpoint:checkpoint,identity:key},options);assert.equal(result.evidence.payload.state,'SEALED');snapshot=result.directory;const v=await verify(snapshot,key,options);assert.equal(v.metadata.data.issues?.length,35);});
+  await test('RV-CRYPTO-03-source-mismatch',async()=>{const count=requests.length;await assert.rejects(captureHttp({...input,source:{...source,repo:'other'},previousCheckpoint:checkpoint,identity:key},options),/RESUME_SOURCE_MISMATCH/);assert.equal(requests.length,count);});
+  await test('RV-CRYPTO-04-wrong-key-cleanup',async()=>{await assert.rejects(verify(snapshot,wrong,options),/AGE_OPERATION_FAILED/);assert.deepEqual(await readdir(options.workRoot),[]);});
+  await test('RV-CRYPTO-05-restore',async()=>{const plan=await restorePlan(snapshot,key,path.join(root,'restored'),options);const result=await restore(plan,key,options);assert.equal(result.result.status,'PASS');assert.deepEqual(JSON.parse(await readFile(path.join(result.directory,'metadata.json'),'utf8')),(await verify(snapshot,key,options)).metadata);await assert.rejects(restore(plan,key,options),/RESTORE_TARGET_NOT_EMPTY/);});
+  await test('RV-CRYPTO-06-tamper',async()=>{const file=path.join(snapshot,'payload.age'),bytes=await readFile(file);const corrupted=Buffer.from(bytes);corrupted[50]=corrupted[50]!^1;await writeFile(file,corrupted);try{await assert.rejects(verify(snapshot,key,options),/CIPHERTEXT_INTEGRITY_MISMATCH/);}finally{await writeFile(file,bytes);}});
+  await test('RV-CRYPTO-07-capture-failure-cleanup',async()=>{const out=path.join(root,'failed'),meta=await collectRepository(source,transport);await assert.rejects(captureLocal({...input,out,metadata:meta},{...options,age:path.join(root,'nonexistent-age')}),/AGE_OPERATION_FAILED/);assert.deepEqual(await readdir(out),[]);assert.deepEqual(await readdir(options.workRoot),[]);});
+  await test('RV-CRYPTO-08-checkpoint-failure-cleanup',async()=>{const out=path.join(root,'failed-checkpoints'),meta=await collectRepository(source,transport);await assert.rejects(saveCheckpoint(out,source,meta.captureStart,meta.checkpoints,recipient,{...options,age:path.join(root,'nonexistent-age')}),/CHECKPOINT_ENCRYPTION_FAILED/);assert.deepEqual(await readdir(out),[]);assert.deepEqual(await readdir(options.workRoot),[]);});
+  await test('RV-CRYPTO-09-output-creation-failure-cleanup',async()=>{const blocked=path.join(root,'blocked-output');await writeFile(blocked,'not a directory');const meta=await collectRepository(source,transport);await assert.rejects(captureLocal({...input,out:blocked,metadata:meta},options));assert.deepEqual(await readdir(options.workRoot),[]);await assert.rejects(saveCheckpoint(blocked,source,meta.captureStart,meta.checkpoints,recipient,options));assert.deepEqual(await readdir(options.workRoot),[]);});
+  await test('RV-CRYPTO-10-snapshot-resume',async()=>{const result=await captureHttp({...input,previousSnapshot:snapshot,identity:key},options);assert.equal(result.evidence.payload.state,'SEALED');const count=requests.length;await assert.rejects(captureHttp({...input,repoId:'synthetic/other',previousSnapshot:snapshot,identity:key},options),/RESUME_REPO_ID_MISMATCH/);assert.equal(requests.length,count);});
+  await test('RV-CRYPTO-11-checkpoint-tamper',async()=>{const file=path.join(checkpoint,'state.age'),bytes=await readFile(file);const corrupted=Buffer.from(bytes);corrupted[50]=corrupted[50]!^1;await writeFile(file,corrupted);try{await assert.rejects(loadCheckpoint(checkpoint,key,options),/CHECKPOINT_INTEGRITY/);}finally{await writeFile(file,bytes);}});
+  await test('RV-CRYPTO-12-workflow-checkpoint-failure',async()=>{const out=path.join(root,'workflow-failed-snapshots'),checkpointOut=path.join(root,'workflow-failed-checkpoints');await assert.rejects(captureHttp({...input,out,checkpointOut},{...options,age:path.join(root,'nonexistent-age')}),/CHECKPOINT_ENCRYPTION_FAILED/);assert.deepEqual(await readdir(checkpointOut),[]);assert.deepEqual(await readdir(options.workRoot),[]);await assert.rejects(readdir(out));});
+  // Test-only identities are not included in the evidence deliverable.
+  await rm(key,{force:true});await rm(wrong,{force:true});
+ }
+}catch(e){results.push({id:'RV-HTTP-runtime',status:'BLOCKED',detail:String(e)});process.exitCode=1;}
+finally{await new Promise<void>(resolve=>server.close(()=>resolve()));await writeFile(path.join(root,'results.json'),JSON.stringify({executedAt:new Date().toISOString(),archiveFormat:stream?'stream-v2':'zip-v1',scope:'Actual synthetic loopback HTTP; optional installed real age; no GitHub/customer data',results},null,2));await writeFile(path.join(artifactRoot,'latest-repovault-http.txt'),root+'\n');console.log('Results: '+root);}

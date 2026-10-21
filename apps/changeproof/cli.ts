@@ -1,0 +1,8 @@
+import {parseArgs} from 'node:util';
+import {compare} from './core.ts';
+import {Store} from '../../packages/safe-io/store.ts';
+import {sha} from '../../packages/safe-io/index.ts';
+import path from 'node:path';
+const {values}=parseArgs({options:{repo:{type:'string'},base:{type:'string'},head:{type:'string',default:'HEAD'},policy:{type:'string'},out:{type:'string',default:'artifacts/changeproof'},dependencies:{type:'string'},'dirty-snapshot':{type:'boolean',default:false},'trust-local':{type:'boolean',default:false}},allowPositionals:true});
+if(!values.repo||!values.base||!values.policy){console.error('Usage: changeproof compare --repo PATH --base REF --head REF --policy EXTERNAL.json --trust-local [--dependencies PATH] [--out PATH]');process.exitCode=2;}
+else{const controller=new AbortController();process.once('SIGINT',()=>controller.abort());process.once('SIGTERM',()=>controller.abort());try{const result=await compare({repo:values.repo,base:values.base,head:values.head,policy:values.policy,out:values.out,trustLocal:values['trust-local'],dirtySnapshot:values['dirty-snapshot'],signal:controller.signal,...(values.dependencies?{dependencies:values.dependencies}:{}),onProgress:r=>console.error(`${r.state}: ${r.checks.length} checks`)});const store=new Store(path.join(values.out,'index.sqlite'));store.put(result.evidence.payload.runId,'changeproof',sha(JSON.stringify(result.evidence)),result.directory);store.close();console.log(JSON.stringify({state:result.evidence.payload.state,verdict:result.evidence.payload.verdict,report:path.join(result.directory,'report.html')}));process.exitCode=result.evidence.payload.verdict==='PASS'?0:1;}catch(e){console.error(e instanceof Error?e.message:'ERROR');process.exitCode=2;}}

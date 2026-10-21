@@ -1,0 +1,38 @@
+{
+  "name": "dots-local-suite",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=24.13.0 <25"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --maxWorkers=1 --no-file-parallelism",
+    "acceptance": "node scripts/acceptance.ts",
+    "demo": "node scripts/demo.ts",
+    "changeproof": "node apps/changeproof/cli.ts",
+    "bugcapsule": "node apps/bugcapsule-viewer/cli.ts",
+    "repovault": "node apps/repovault/cli.ts",
+    "licenses": "node scripts/licenses.ts",
+    "build:extension": "node scripts/build-extension.ts",
+    "serve": "node scripts/serve.ts"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "fast-xml-parser": "5.11.2",
+    "fflate": "0.8.2",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/jsdom": "27.0.0",
+    "@types/node": "24.10.1",
+    "jsdom": "27.4.0",
+    "typescript": "5.9.3",
+    "vitest": "4.0.18"
+  },
+  "license": "MIT"
+}
